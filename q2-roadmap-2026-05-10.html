@@ -4,12 +4,14 @@
       data-livedoc-grammar="roadmap-v1"
       data-livedoc-version="1"
       data-livedoc-created="2026-05-10"
-      data-livedoc-author="jbwashington">
+      data-livedoc-author="jbwashington"
+      data-mode="default">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Q2 Roadmap — Living Doc</title>
   <style>
+    /* ───── Design tokens ───── */
     :root {
       --bg:#FAF9F5; --surface:#F0EEE6; --card:#FFFFFF; --text:#141413;
       --text-muted:#87867F; --border-color:#D1CFC5; --border:1.5px solid #D1CFC5;
@@ -24,6 +26,18 @@
     * { box-sizing:border-box; }
     body { font-family:var(--sans); background:var(--bg); color:var(--text);
            max-width:900px; margin:0 auto; padding:1.75rem 1.25rem; line-height:1.6; }
+
+    /* ───── Mode toggle (visible in both modes) ───── */
+    #mode-toggle { position:fixed; top:0.9rem; right:0.9rem; z-index:100;
+                   display:inline-flex; gap:0; background:var(--card); border:var(--border);
+                   border-radius:999px; padding:2px; font-family:var(--mono); font-size:0.68rem;
+                   box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+    #mode-toggle button { background:transparent; color:var(--text-muted);
+                          padding:4px 11px; border-radius:999px; border:none; cursor:pointer;
+                          margin:0; font-family:var(--mono); font-size:inherit; }
+    #mode-toggle button[aria-pressed="true"] { background:var(--accent); color:white; }
+
+    /* ───── DEFAULT MODE styles ───── */
     h1 { font-family:var(--serif); font-size:1.75rem; margin:0 0 0.25rem; line-height:1.2; }
     h2 { font-family:var(--serif); font-size:1.2rem; margin:1.75rem 0 0.5rem; }
     p { margin:0 0 0.75rem; }
@@ -32,6 +46,9 @@
     .item { display:flex; gap:0.6rem; align-items:baseline; padding:0.55rem 0;
             border-bottom:1px solid rgba(127,127,127,.18); flex-wrap:wrap; }
     .item .title { flex:1; min-width:55%; }
+    .item .note { display:block; flex:0 0 100%; margin-top:0.2rem;
+                  font-size:0.82rem; color:var(--text-muted); font-style:italic;
+                  padding-left:1rem; border-left:2px solid rgba(127,127,127,.2); }
     .chip { display:inline-flex; padding:0.2em 0.6em; border-radius:999px;
             font-size:0.7rem; font-family:var(--mono);
             background:var(--oat); color:var(--text-muted); white-space:nowrap; }
@@ -41,11 +58,12 @@
     .chip.done   { background:rgba(120,140,93,0.20); color:var(--olive); }
     .chip.blocked{ background:rgba(176,74,74,0.22); color:var(--danger); }
     .meta { font-size:0.75rem; color:var(--text-muted); font-family:var(--mono); }
+
+    /* ───── Editor panel (same in both modes) ───── */
     .panel { margin-top:2.5rem; border:var(--border); border-radius:10px;
              padding:0.5rem 1rem 1rem; background:var(--card); }
     .panel summary { cursor:pointer; padding:0.65rem 0; color:var(--text-muted);
-                     font-family:var(--mono); font-size:0.85rem;
-                     list-style:none; }
+                     font-family:var(--mono); font-size:0.85rem; list-style:none; }
     .panel summary::-webkit-details-marker { display:none; }
     .panel summary::after { content:' ▾'; }
     .panel[open] summary::after { content:' ▴'; }
@@ -54,33 +72,134 @@
                background:var(--surface); color:var(--text);
                border:var(--border); border-radius:8px; resize:vertical;
                box-sizing:border-box; }
-    button { margin-top:0.6rem; padding:0.55em 1.1em; border-radius:6px;
+    button { padding:0.55em 1.1em; border-radius:6px;
              border:1px solid var(--accent); background:var(--accent); color:white;
              font-size:0.85rem; cursor:pointer; font-family:var(--sans); }
     button.secondary { background:transparent; color:var(--accent); }
     button:hover { opacity:0.9; }
     .toolbar { display:flex; gap:0.5rem; margin-top:0.6rem; flex-wrap:wrap; }
-    .toolbar button { margin-top:0; }
-    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
-             background:var(--olive); color:white; padding:0.6rem 1.1rem;
-             border-radius:8px; font-size:0.85rem; opacity:0; pointer-events:none;
-             transition:opacity 0.25s; z-index:10; }
-    .toast.show { opacity:1; }
     pre.grammar { background:var(--surface); padding:0.85rem 1rem;
                   border-radius:8px; font-family:var(--mono); font-size:0.78rem;
                   color:var(--text); white-space:pre-wrap; overflow-x:auto;
                   border:var(--border); margin:0; }
+    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%);
+             background:var(--olive); color:white; padding:0.6rem 1.1rem;
+             border-radius:8px; font-size:0.85rem; opacity:0; pointer-events:none;
+             transition:opacity 0.25s; z-index:200; }
+    .toast.show { opacity:1; }
     .noscript-warn { background:rgba(217,119,87,.18); color:var(--clay);
                      padding:0.85rem 1rem; border-radius:8px; margin:1rem 0;
                      font-size:0.9rem; }
+
+    /* ───── DENSE MODE overrides ───── */
+    [data-mode="dense"] body { max-width:1100px; padding:1rem 1rem 1.5rem; font-size:13px; }
+    [data-mode="dense"] header h1 { font-family:var(--mono); font-size:1.05rem;
+                                     font-weight:700; letter-spacing:0.04em;
+                                     text-transform:uppercase; margin:0; }
+    [data-mode="dense"] header p { display:none; }
+    [data-mode="dense"] header .label { display:none; }
+    [data-mode="dense"] header { padding-bottom:0.5rem;
+                                  border-bottom:2px solid var(--text); margin-bottom:0; }
+
+    [data-mode="dense"] .header-row { display:flex; justify-content:space-between;
+                                       align-items:baseline; gap:1rem; flex-wrap:wrap;
+                                       font-family:var(--mono); font-size:11px;
+                                       color:var(--text-muted); }
+    [data-mode="dense"] .header-row .doc-meta { letter-spacing:0.04em; }
+
+    [data-mode="dense"] #livedoc-stats { display:flex; gap:1.5rem; flex-wrap:wrap;
+                                          padding:0.6rem 0; border-bottom:1px solid var(--border-color);
+                                          font-family:var(--mono); font-size:11px;
+                                          letter-spacing:0.04em; text-transform:uppercase;
+                                          position:sticky; top:0; background:var(--bg);
+                                          z-index:50; margin-bottom:0.75rem; }
+    [data-mode="dense"] #livedoc-stats .stat { color:var(--text-muted); }
+    [data-mode="dense"] #livedoc-stats .stat strong { color:var(--text); font-weight:700;
+                                                      margin-right:0.3em; }
+    [data-mode="dense"] #livedoc-stats .stat.now strong { color:var(--clay); }
+    [data-mode="dense"] #livedoc-stats .stat.next strong { color:var(--accent); }
+    [data-mode="dense"] #livedoc-stats .stat.later strong { color:var(--text-muted); }
+    [data-mode="dense"] #livedoc-stats .stat.done strong { color:var(--olive); }
+    [data-mode="dense"] #livedoc-stats .stat.blocked strong { color:var(--danger); }
+    [data-mode="dense"] #livedoc-stats .stat.perf { margin-left:auto; }
+
+    [data-mode="dense"] .quarter-header { font-family:var(--mono); font-size:13px;
+                                            font-weight:700; letter-spacing:0.06em;
+                                            text-transform:uppercase; margin:1.25rem 0 0.25rem;
+                                            padding-bottom:0.25rem;
+                                            border-bottom:1px solid var(--text); }
+    [data-mode="dense"] .dense-quarter { width:100%; border-collapse:collapse;
+                                          font-family:var(--mono); font-size:12px;
+                                          font-variant-numeric:tabular-nums;
+                                          margin-bottom:0.5rem; }
+    [data-mode="dense"] .dense-quarter th { text-align:left; font-weight:600;
+                                              padding:6px 12px 4px 0; font-size:10px;
+                                              letter-spacing:0.06em; text-transform:uppercase;
+                                              color:var(--text-muted);
+                                              border-bottom:1px solid var(--border-color); }
+    [data-mode="dense"] .dense-quarter td { padding:4px 12px 4px 0;
+                                              border-bottom:1px solid rgba(127,127,127,0.12);
+                                              vertical-align:top; }
+    [data-mode="dense"] .dense-quarter td.due,
+    [data-mode="dense"] .dense-quarter td.size,
+    [data-mode="dense"] .dense-quarter td.owner { color:var(--text-muted); white-space:nowrap; }
+    [data-mode="dense"] .dense-quarter td.size,
+    [data-mode="dense"] .dense-quarter td.owner { text-align:center; }
+    [data-mode="dense"] .dense-quarter td.status { font-weight:700; white-space:nowrap; }
+    [data-mode="dense"] .dense-quarter td.title { width:100%; word-wrap:anywhere; }
+    [data-mode="dense"] .status-now    { color:var(--clay); }
+    [data-mode="dense"] .status-next   { color:var(--accent); }
+    [data-mode="dense"] .status-later  { color:var(--text-muted); }
+    [data-mode="dense"] .status-done   { color:var(--olive); }
+    [data-mode="dense"] .status-blocked{ color:var(--danger); }
+    [data-mode="dense"] .dense-quarter td.risk { white-space:nowrap; }
+    [data-mode="dense"] .risk-low    { color:var(--text-muted); }
+    [data-mode="dense"] .risk-med    { color:var(--clay); font-weight:600; }
+    [data-mode="dense"] .risk-high   { color:var(--danger); font-weight:600; }
+    [data-mode="dense"] .dense-quarter tr.has-note td.title::after { content:''; }
+    [data-mode="dense"] .dense-quarter .note-row td {
+       padding-top:0; padding-bottom:6px; padding-left:0;
+       font-size:11px; color:var(--text-muted); border-bottom:1px solid rgba(127,127,127,0.12);
+    }
+    [data-mode="dense"] .dense-quarter .note-row td .note-prefix {
+       color:var(--text-muted); margin-right:0.5em; }
+
+    /* Grammar always-visible card in dense mode */
+    [data-mode="dense"] .panel.grammar-panel { margin-top:1.5rem; }
+    [data-mode="dense"] .panel.grammar-panel summary { display:none; }
+    [data-mode="dense"] .panel.grammar-panel > pre.grammar { display:block !important; }
+    [data-mode="dense"] .panel.grammar-panel::before {
+       content:'GRAMMAR · ' attr(data-grammar-slug);
+       display:block; font-family:var(--mono); font-size:10px; letter-spacing:0.06em;
+       text-transform:uppercase; color:var(--text-muted); padding-bottom:0.5rem;
+       border-bottom:1px solid var(--text); margin-bottom:0.5rem; }
+    [data-mode="dense"] .panel.grammar-panel pre.grammar {
+       background:transparent; border:none; padding:0; font-size:11px; }
+    [data-mode="dense"] .panel { padding:0.85rem 1rem; }
+
+    /* Make source panel less prominent in dense mode */
+    [data-mode="dense"] .panel.source-panel summary { font-size:10px;
+                                                       text-transform:uppercase;
+                                                       letter-spacing:0.06em; }
+    [data-mode="dense"] .panel.source-panel textarea { font-size:11px; min-height:200px; }
   </style>
 </head>
 <body>
+  <div id="mode-toggle">
+    <button type="button" data-mode-set="default" aria-pressed="true">default</button>
+    <button type="button" data-mode-set="dense" aria-pressed="false">dense</button>
+  </div>
+
   <header>
     <p class="label">Living Doc · roadmap-v1</p>
     <h1>Q2 Roadmap</h1>
     <p style="color:var(--text-muted);">Edit the source below — the rendered view updates as you type.</p>
+    <div class="header-row" id="header-row" style="display:none;">
+      <span class="doc-meta">roadmap-v1 · v1 · created 2026-05-10</span>
+    </div>
   </header>
+
+  <aside id="livedoc-stats" style="display:none;"></aside>
 
   <noscript>
     <div class="noscript-warn">
@@ -90,7 +209,7 @@
 
   <main id="livedoc-rendered"></main>
 
-  <details class="panel" open>
+  <details class="panel source-panel" open>
     <summary>Source · roadmap-v1</summary>
     <textarea id="livedoc-source" spellcheck="false">## Q2
 
@@ -114,9 +233,7 @@
     </div>
   </details>
 
-  <div class="toast" id="toast"></div>
-
-  <details class="panel">
+  <details class="panel grammar-panel" data-grammar-slug="roadmap-v1">
     <summary>DSL grammar (read this if you're an LLM updating the file)</summary>
     <pre class="grammar" id="livedoc-grammar"># Roadmap DSL v1
 
@@ -126,7 +243,7 @@ Capture roadmap items grouped by quarter, with status and metadata, in a flat ap
 ## Syntax
 Lines starting with `## ` open a quarter section: `## Q2`
 Lines starting with `- ` are items: `- [status] title (k:v, k:v)`
-Lines starting with `#` (not `##`) are comments — ignored by the renderer.
+Lines starting with `#` (not `##`) are comments — attached as a note to the most recent item.
 Blank lines are ignored.
 
 ## Field values
@@ -140,29 +257,42 @@ metadata keys (all optional, comma-separated inside parens):
 ## Editing tips
 - To add an item, type one new bullet at the end of its quarter section.
 - To re-status, change the bracketed value.
+- To annotate, add a `# comment` line right after the item.
 - Order within a section is preserved in render.
 - Unknown keys are shown as raw `k:v` chips — they don't break parsing.
 
 ## Versioning
-v1 (2026-05-10): initial</pre>
+v1 (2026-05-10): initial; comments attach to preceding item as notes
+</pre>
   </details>
+
+  <div class="toast" id="toast"></div>
 
   <script>
     (function () {
       var STATUS = ['now','next','later','done','blocked'];
+      var STATUS_CODE = { now:'NOW', next:'NXT', later:'LTR', done:'DON', blocked:'BLK' };
       var ITEM_RE = /^-\s+\[(\w+)\]\s+(.+?)(?:\s+\(([^)]*)\))?\s*$/;
       var QUARTER_RE = /^##\s+(.+)\s*$/;
 
+      // ───── Parse ─────
       function parse(src) {
         var lines = src.split('\n');
         var sections = [];
         var cur = null;
+        var lastItem = null;
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].trim();
           if (!line) continue;
-          if (line.charAt(0) === '#' && line.charAt(1) !== '#') continue;
+          if (line.charAt(0) === '#' && line.charAt(1) !== '#') {
+            if (lastItem) {
+              var note = line.replace(/^#\s*/, '');
+              lastItem.note = lastItem.note ? (lastItem.note + ' ' + note) : note;
+            }
+            continue;
+          }
           var m = QUARTER_RE.exec(line);
-          if (m) { cur = { name: m[1], items: [] }; sections.push(cur); continue; }
+          if (m) { cur = { name: m[1], items: [] }; sections.push(cur); lastItem = null; continue; }
           m = ITEM_RE.exec(line);
           if (m && cur) {
             var meta = {};
@@ -173,14 +303,61 @@ v1 (2026-05-10): initial</pre>
                 if (kv.length >= 2) meta[kv[0].trim()] = kv.slice(1).join(':').trim();
               }
             }
-            cur.items.push({ status: m[1], title: m[2], meta: meta });
+            var item = { status: m[1], title: m[2], meta: meta };
+            cur.items.push(item);
+            lastItem = item;
           }
         }
         return sections;
       }
 
-      function build(sections, root) {
-        while (root.firstChild) root.removeChild(root.firstChild);
+      // ───── Stats ─────
+      function computeStats(sections, src, parseMs) {
+        var counts = { now:0, next:0, later:0, done:0, blocked:0 };
+        var total = 0;
+        for (var i = 0; i < sections.length; i++) {
+          for (var j = 0; j < sections[i].items.length; j++) {
+            total++;
+            var s = sections[i].items[j].status;
+            if (counts[s] !== undefined) counts[s]++;
+          }
+        }
+        return {
+          total: total,
+          counts: counts,
+          chars: src.length,
+          ms: parseMs
+        };
+      }
+
+      function renderStats(stats) {
+        var el = document.getElementById('livedoc-stats');
+        if (!el) return;
+        el.replaceChildren();
+        var keys = ['now','next','later','done','blocked'];
+        function statSpan(cls, label, value) {
+          var span = document.createElement('span');
+          span.className = 'stat ' + cls;
+          var strong = document.createElement('strong');
+          strong.textContent = value;
+          span.appendChild(strong);
+          span.appendChild(document.createTextNode(' ' + label));
+          return span;
+        }
+        el.appendChild(statSpan('', 'items', stats.total));
+        for (var i = 0; i < keys.length; i++) {
+          if (stats.counts[keys[i]] > 0) {
+            el.appendChild(statSpan(keys[i], keys[i].toUpperCase(), stats.counts[keys[i]]));
+          }
+        }
+        var perf = document.createElement('span');
+        perf.className = 'stat perf';
+        perf.textContent = stats.chars + ' chars · ' + stats.ms.toFixed(2) + 'ms';
+        el.appendChild(perf);
+      }
+
+      // ───── Default mode builder ─────
+      function buildDefault(sections, root) {
         for (var i = 0; i < sections.length; i++) {
           var sec = sections[i];
           var h2 = document.createElement('h2');
@@ -207,19 +384,133 @@ v1 (2026-05-10): initial</pre>
                 row.appendChild(m);
               }
             }
+            if (it.note) {
+              var note = document.createElement('span');
+              note.className = 'note';
+              note.textContent = it.note;
+              row.appendChild(note);
+            }
             root.appendChild(row);
           }
         }
       }
 
+      // ───── Dense mode builder ─────
+      function buildDense(sections, root) {
+        var COLS = ['due','st','title','sz','own','risk'];
+        for (var i = 0; i < sections.length; i++) {
+          var sec = sections[i];
+          var header = document.createElement('div');
+          header.className = 'quarter-header';
+          header.textContent = sec.name + '  (' + sec.items.length + ')';
+          root.appendChild(header);
+
+          var table = document.createElement('table');
+          table.className = 'dense-quarter';
+          var thead = document.createElement('thead');
+          var thr = document.createElement('tr');
+          ['DUE','ST','TITLE','SZ','OWN','RISK'].forEach(function (t) {
+            var th = document.createElement('th'); th.textContent = t; thr.appendChild(th);
+          });
+          thead.appendChild(thr);
+          table.appendChild(thead);
+          var tbody = document.createElement('tbody');
+
+          for (var j = 0; j < sec.items.length; j++) {
+            var it = sec.items[j];
+            var tr = document.createElement('tr');
+            if (it.note) tr.className = 'has-note';
+            // DUE
+            var td = document.createElement('td'); td.className = 'due';
+            td.textContent = it.meta.due || '—'; tr.appendChild(td);
+            // ST
+            td = document.createElement('td');
+            td.className = 'status status-' + it.status;
+            td.textContent = STATUS_CODE[it.status] || it.status.slice(0,3).toUpperCase();
+            tr.appendChild(td);
+            // TITLE
+            td = document.createElement('td'); td.className = 'title';
+            td.textContent = it.title; tr.appendChild(td);
+            // SZ
+            td = document.createElement('td'); td.className = 'size';
+            td.textContent = it.meta.size || '—'; tr.appendChild(td);
+            // OWN
+            td = document.createElement('td'); td.className = 'owner';
+            td.textContent = it.meta.owner || '—'; tr.appendChild(td);
+            // RISK
+            td = document.createElement('td'); td.className = 'risk';
+            if (it.meta.risk) {
+              var rspan = document.createElement('span');
+              rspan.className = 'risk-' + it.meta.risk;
+              var dot = it.meta.risk === 'low' ? '○' : '●';
+              rspan.textContent = dot + ' ' + it.meta.risk;
+              td.appendChild(rspan);
+            } else { td.textContent = '—'; }
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+
+            if (it.note) {
+              var nr = document.createElement('tr');
+              nr.className = 'note-row';
+              var pad = document.createElement('td'); pad.colSpan = 2; nr.appendChild(pad);
+              var noteTd = document.createElement('td'); noteTd.colSpan = 4;
+              var pref = document.createElement('span');
+              pref.className = 'note-prefix'; pref.textContent = '↳';
+              noteTd.appendChild(pref);
+              noteTd.appendChild(document.createTextNode(it.note));
+              nr.appendChild(noteTd);
+              tbody.appendChild(nr);
+            }
+          }
+          table.appendChild(tbody);
+          root.appendChild(table);
+        }
+      }
+
+      // ───── Render dispatch ─────
       function render() {
         var ta = document.getElementById('livedoc-source');
         var out = document.getElementById('livedoc-rendered');
         if (!ta || !out) return;
-        build(parse(ta.value), out);
+        var start = performance.now();
+        var tree = parse(ta.value);
+        var elapsed = performance.now() - start;
+        while (out.firstChild) out.removeChild(out.firstChild);
+        var mode = document.documentElement.getAttribute('data-mode') || 'default';
+        if (mode === 'dense') buildDense(tree, out);
+        else buildDefault(tree, out);
+        renderStats(computeStats(tree, ta.value, elapsed));
       }
 
-      // Per-DSL: serialize the parse tree to readable markdown for chat handoff
+      // ───── Mode toggle ─────
+      function getStoredMode() {
+        try { return localStorage.getItem('livedoc-mode') || 'default'; }
+        catch (e) { return 'default'; }
+      }
+      function setMode(m) {
+        if (m !== 'default' && m !== 'dense') m = 'default';
+        document.documentElement.setAttribute('data-mode', m);
+        try { localStorage.setItem('livedoc-mode', m); } catch (e) {}
+        var btns = document.querySelectorAll('#mode-toggle button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].setAttribute('aria-pressed',
+            btns[i].getAttribute('data-mode-set') === m ? 'true' : 'false');
+        }
+        var stats = document.getElementById('livedoc-stats');
+        var headerRow = document.getElementById('header-row');
+        var grammarPanel = document.querySelector('.grammar-panel');
+        if (m === 'dense') {
+          if (stats) stats.style.display = 'flex';
+          if (headerRow) headerRow.style.display = 'flex';
+          if (grammarPanel) grammarPanel.setAttribute('open', '');
+        } else {
+          if (stats) stats.style.display = 'none';
+          if (headerRow) headerRow.style.display = 'none';
+        }
+        render();
+      }
+
+      // ───── Markdown serialize ─────
       function serializeMarkdown(sections) {
         var lines = [];
         for (var i = 0; i < sections.length; i++) {
@@ -237,11 +528,13 @@ v1 (2026-05-10): initial</pre>
             }
             if (metaPairs.length) line += ' _(' + metaPairs.join(', ') + ')_';
             lines.push(line);
+            if (it.note) lines.push('  > ' + it.note);
           }
         }
         return lines.join('\n');
       }
 
+      // ───── Clipboard ─────
       function copyToClipboard(text) {
         return new Promise(function (resolve, reject) {
           if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
@@ -252,19 +545,21 @@ v1 (2026-05-10): initial</pre>
           function fallback(res, rej) {
             var t = document.createElement('textarea');
             t.value = text;
-            t.style.position = 'fixed';
-            t.style.top = '0';
-            t.style.left = '0';
-            t.style.opacity = '0';
-            document.body.appendChild(t);
-            t.focus();
-            t.select();
-            var ok = false;
-            try { ok = document.execCommand('copy'); } catch (e) {}
+            t.style.position = 'fixed'; t.style.top = '0'; t.style.left = '0'; t.style.opacity = '0';
+            document.body.appendChild(t); t.focus(); t.select();
+            var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
             document.body.removeChild(t);
             ok ? res() : rej(new Error('copy failed'));
           }
         });
+      }
+
+      function toast(msg) {
+        var t = document.getElementById('toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(function () { t.classList.remove('show'); }, 1800);
       }
 
       function copyMarkdown() {
@@ -305,17 +600,6 @@ v1 (2026-05-10): initial</pre>
         });
       }
 
-      window.__livedocRender = render;
-      window.__livedocCopyMarkdown = copyMarkdown;
-
-      function toast(msg) {
-        var t = document.getElementById('toast');
-        if (!t) return;
-        t.textContent = msg;
-        t.classList.add('show');
-        setTimeout(function () { t.classList.remove('show'); }, 1800);
-      }
-
       function downloadSnapshot() {
         var ta = document.getElementById('livedoc-source');
         if (!ta) return;
@@ -328,6 +612,8 @@ v1 (2026-05-10): initial</pre>
         }
         var clonedRendered = clone.querySelector('#livedoc-rendered');
         if (clonedRendered) while (clonedRendered.firstChild) clonedRendered.removeChild(clonedRendered.firstChild);
+        var clonedStats = clone.querySelector('#livedoc-stats');
+        if (clonedStats) while (clonedStats.firstChild) clonedStats.removeChild(clonedStats.firstChild);
         var html = '<!DOCTYPE html>\n' + clone.outerHTML;
         var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
         var url = URL.createObjectURL(blob);
@@ -335,14 +621,15 @@ v1 (2026-05-10): initial</pre>
                      .replace(/[^a-zA-Z0-9-]+/g, '-').toLowerCase();
         var today = new Date().toISOString().slice(0, 10);
         var a = document.createElement('a');
-        a.href = url;
-        a.download = name + '-' + today + '.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        a.href = url; a.download = name + '-' + today + '.html';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
         setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
         toast('Downloaded ' + a.download);
       }
+
+      window.__livedocRender = render;
+      window.__livedocCopyMarkdown = copyMarkdown;
+      window.__livedocSetMode = setMode;
 
       function init() {
         var ta = document.getElementById('livedoc-source');
@@ -353,7 +640,13 @@ v1 (2026-05-10): initial</pre>
         if (btn) btn.addEventListener('click', render);
         if (dl) dl.addEventListener('click', downloadSnapshot);
         if (cp) cp.addEventListener('click', copyMarkdown);
-        render();
+        var toggles = document.querySelectorAll('#mode-toggle button');
+        for (var i = 0; i < toggles.length; i++) {
+          toggles[i].addEventListener('click', function (e) {
+            setMode(e.currentTarget.getAttribute('data-mode-set'));
+          });
+        }
+        setMode(getStoredMode());
       }
 
       if (document.readyState === 'loading') {
