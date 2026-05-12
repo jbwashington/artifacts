@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Regenerates index.html from the HTML files in this directory.
-# Run before commit when adding or removing a livedoc.
+# Run before commit when adding or removing a artifact.
 
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -16,12 +16,12 @@ done
 extract() {
   # Usage: extract <attr> <file>
   # Pulls a data-* attribute value from the <html> tag.
-  grep -oE "data-livedoc-$1=\"[^\"]+\"" "$2" 2>/dev/null \
+  grep -oE "data-artifact-$1=\"[^\"]+\"" "$2" 2>/dev/null \
     | head -1 \
-    | sed -E "s/data-livedoc-$1=\"([^\"]+)\"/\1/"
+    | sed -E "s/data-artifact-$1=\"([^\"]+)\"/\1/"
 }
 
-# Sort files by data-livedoc-created (newest first), falling back to filename
+# Sort files by data-artifact-created (newest first), falling back to filename
 declare -a sorted
 if [[ ${#files[@]} -gt 0 ]]; then
   IFS=$'\n' sorted=($(
@@ -41,7 +41,7 @@ cat <<'HEAD'
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jbwashington · livedocs</title>
+  <title>jbwashington · artifacts</title>
   <style>
     :root {
       --bg:#FAF9F5; --surface:#F0EEE6; --card:#FFFFFF; --text:#141413;
@@ -75,8 +75,8 @@ cat <<'HEAD'
 </head>
 <body>
   <header>
-    <p class="label">jbwashington · livedocs</p>
-    <h1>Livedocs</h1>
+    <p class="label">jbwashington · artifacts</p>
+    <h1>Artifacts</h1>
     <p>Self-describing HTML artifacts. Open any one to read, edit, or download.</p>
   </header>
   <ul>
@@ -94,18 +94,18 @@ if [[ ${#sorted[@]} -gt 0 ]]; then
       "$f" "$name" "$grammar" "$created"
   done
 else
-  echo '    <li class="meta">No livedocs yet.</li>'
+  echo '    <li class="meta">No artifacts yet.</li>'
 fi
 
 cat <<'FOOT'
   </ul>
   <footer>
     Repo: <a href="https://github.com/jbwashington/livedocs">github.com/jbwashington/livedocs</a> ·
-    Pattern: <a href="https://github.com/jbwashington/.claude">living-doc skill</a>
+    Pattern: <a href="https://github.com/jbwashington/.claude">artifact skill</a>
   </footer>
 </body>
 </html>
 FOOT
 } > index.html
 
-echo "Wrote index.html with ${#sorted[@]} livedoc(s)"
+echo "Wrote index.html with ${#sorted[@]} artifact(s)"
