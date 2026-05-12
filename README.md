@@ -2,7 +2,7 @@
 
 Public artifacts by [jbwashington](https://github.com/jbwashington). Each file is a single self-contained HTML document with embedded DSL source and grammar — open any one to read, edit, or download.
 
-**Index:** [https://jbwashington.github.io/livedocs/](https://jbwashington.github.io/livedocs/)
+**Index:** [https://jbwashington.github.io/artifacts/](https://jbwashington.github.io/artifacts/)
 
 ## What is an artifact?
 
@@ -19,12 +19,12 @@ The pattern is documented in the [`artifact` Claude Code skill](https://github.c
 
 ## Publishing flow
 
-1. Author artifacts locally at `~/Documents/livedocs/personal/`
+1. Author artifacts locally at `~/Documents/artifacts/personal/`
 2. Copy the file into this repo's root directory
 3. Run `./regen-index.sh` to refresh `index.html`
-4. Commit and push — GitHub Pages serves the file at `https://jbwashington.github.io/livedocs/{filename}`
+4. Commit and push — GitHub Pages serves the file at `https://jbwashington.github.io/artifacts/{filename}`
 
-Work artifacts stay in `~/Documents/livedocs/work/` and are never pushed here.
+Work artifacts stay in `~/Documents/artifacts/work/` and are never pushed here.
 
 ## Editing & sharing
 

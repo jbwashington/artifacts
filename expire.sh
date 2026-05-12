@@ -5,7 +5,7 @@
 # attribute is in the past. Expired files are git-rm'd, the index is regenerated,
 # a single commit captures all removals, and the result is pushed to main.
 #
-# The author's local copy at ~/Documents/livedocs/personal/ is NOT touched —
+# The author's local copy at ~/Documents/artifacts/personal/ is NOT touched —
 # only the public-facing repo is cleaned. This keeps your private record while
 # expiring the shared URL.
 #

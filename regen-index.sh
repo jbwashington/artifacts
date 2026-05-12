@@ -100,7 +100,7 @@ fi
 cat <<'FOOT'
   </ul>
   <footer>
-    Repo: <a href="https://github.com/jbwashington/livedocs">github.com/jbwashington/livedocs</a> ·
+    Repo: <a href="https://github.com/jbwashington/artifacts">github.com/jbwashington/artifacts</a> ·
     Pattern: <a href="https://github.com/jbwashington/.claude">artifact skill</a>
   </footer>
 </body>
