@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en"
+      data-artifact-name="Titan SLA Retainer Contract — Draft"
+      data-artifact-grammar="contract-draft-v1"
+      data-artifact-version="1"
+      data-artifact-created="2026-05-13"
+      data-artifact-author="jbwashington">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Titan SLA Retainer Contract — Draft for review</title>
+  <style>
+    :root {
+      --bg: #FAF9F5;
+      --surface: #F0EEE6;
+      --card: #FFFFFF;
+      --text: #141413;
+      --text-muted: #87867F;
+      --border: 1.5px solid #D1CFC5;
+      --border-soft: 1px solid #E3DACC;
+      --accent: #5C7CA3;
+      --olive: #788C5D;
+      --clay: #D97757;
+      --danger: #B04A4A;
+      --oat: #E3DACC;
+      --serif: ui-serif, Georgia, serif;
+      --sans: system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(20,20,19,.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f14; --surface: #1a1a2e; --card: #16213e; --text: #e6e7ec;
+        --text-muted: #8b8fa5; --border: 1.5px solid #2a2a3e; --border-soft: 1px solid #232336;
+        --accent: #7c83ff; --olive: #34d399; --clay: #f59e0b; --danger: #f87171; --oat: #1e2040;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 5rem;
+    }
+    h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; }
+    h1 { font-size: 1.85rem; margin: 0 0 0.4rem; line-height: 1.2; font-family: var(--sans); }
+    h2 { font-size: 1.25rem; margin: 2.25rem 0 0.75rem; padding-top: 0.75rem; border-top: var(--border); }
+    h2:first-of-type { border-top: none; padding-top: 0; }
+    h3 { font-size: 1.05rem; margin: 1.4rem 0 0.5rem; }
+    h4 { font-size: 0.95rem; margin: 1rem 0 0.4rem; color: var(--text-muted); font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.8rem; }
+    p { margin: 0 0 0.85rem; }
+    ul, ol { margin: 0 0 0.85rem; padding-left: 1.5rem; }
+    li { margin: 0.25rem 0; }
+
+    .label {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    /* Merge-field placeholders shown in line — distinguishable but readable */
+    .mf {
+      display: inline;
+      font-family: var(--mono);
+      font-size: 0.82em;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      padding: 0.05em 0.35em;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--r-lg);
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 1.25rem;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .card.accent  { border-left: 3px solid var(--accent); }
+    .card.warn    { border-left: 3px solid var(--clay); background: color-mix(in srgb, var(--clay) 5%, var(--card)); }
+    .card h3 { margin-top: 0; font-family: var(--sans); }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 0.18em 0.55em;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      font-family: var(--mono);
+      background: var(--oat);
+      color: var(--text-muted);
+    }
+    .chip.clay { background: color-mix(in srgb, var(--clay) 18%, transparent); color: var(--clay); }
+    .chip.accent { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); }
+
+    /* Legal-style emphasized text */
+    .legal-cap {
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 0.75rem 0 1rem;
+      font-family: var(--sans);
+    }
+    th, td {
+      text-align: left;
+      padding: 0.5rem 0.65rem;
+      border-bottom: var(--border-soft);
+      vertical-align: top;
+    }
+    th {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .sig-block {
+      background: var(--surface);
+      border-radius: var(--r-md);
+      padding: 1rem 1.15rem;
+      margin: 1rem 0;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+    }
+    .sig-block dt { color: var(--text-muted); font-size: 0.78rem; font-family: var(--mono); }
+    .sig-block dd { margin: 0.15rem 0 0.65rem; }
+    .sig-block .sig-line {
+      display: inline-block;
+      min-width: 200px;
+      border-bottom: 1px solid var(--text-muted);
+      height: 1.3em;
+    }
+
+    nav.toc {
+      background: var(--surface);
+      border-radius: var(--r-md);
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0 1.5rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+    }
+    nav.toc ol { margin: 0; padding-left: 1.25rem; }
+    nav.toc a { color: var(--accent); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-family: var(--sans);
+    }
+    footer a { color: var(--accent); }
+
+    @media (max-width: 640px) {
+      body { padding: 1.25rem 0.95rem 3rem; font-size: 15.5px; }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.15rem; }
+      .card { padding: 1rem; }
+    }
+
+    @media print {
+      body { max-width: none; padding: 0; background: white; color: black; }
+      .card, nav.toc { box-shadow: none; border: 1px solid #ccc; }
+      .mf { background: none; color: #555; border: 1px solid #ccc; }
+      footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="label">Contract draft · for Aisha review · 2026-05-13</p>
+  <h1>Master Services Agreement — SLA Retainer</h1>
+  <p style="color: var(--text-muted); font-family: var(--sans);">
+    Draft template for Connective Sports, Tatlist, and Marian Washington. Numbers and per-client values
+    are settled in the <a href="titan-sla-retainer-proposal-2026-05-13.html">retainer proposal</a> —
+    this artifact is for redlining the <em>language</em>.
+  </p>
+  <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin:0.6rem 0 0;">
+    <span class="chip accent">draft</span>
+    <span class="chip">~12 sections</span>
+    <span class="chip clay">5 items need lawyer review</span>
+  </div>
+</header>
+
+<!-- ═════════════════════ REVIEW NOTES ═════════════════════ -->
+
+<div class="card warn">
+  <h3 style="margin-top: 0;">Review notes — delete before sending to clients</h3>
+  <p>This is a working draft, not legal advice. Items that need a real lawyer's eyes before this gets used:</p>
+  <ul>
+    <li><strong>§6 Intellectual Property</strong> — current language assigns work product to client on payment, retains pre-existing materials for Titan. Standard for service work, but confirm.</li>
+    <li><strong>§9 Limitation of Liability</strong> — capped at 12 months of fees. Common; confirm acceptable for these dollar sizes.</li>
+    <li><strong>§10 Indemnification</strong> — mutual, narrow. Some clients will push to make Titan's indemnity broader. Decide your floor.</li>
+    <li><strong>§12.4 Governing Law</strong> — <span class="mf">governing_state</span> placeholder. Pick once based on Titan's home state.</li>
+    <li><strong>Insurance language</strong> — not currently included. Add a §13 if Titan carries (or wants to require) E&amp;O / general liability.</li>
+  </ul>
+  <p style="margin-bottom: 0;">Merge fields appear inline as <span class="mf">field_name</span>. The PDF generator will substitute per client.</p>
+</div>
+
+<!-- ═════════════════════ TABLE OF CONTENTS ═════════════════════ -->
+
+<nav class="toc">
+  <p class="label" style="margin-bottom: 0.4rem;">Contents</p>
+  <ol>
+    <li><a href="#s1">Services</a></li>
+    <li><a href="#s2">Term</a></li>
+    <li><a href="#s3">Fees and Payment</a></li>
+    <li><a href="#s4">Response Service Levels</a></li>
+    <li><a href="#s5">Client Responsibilities</a></li>
+    <li><a href="#s6">Intellectual Property</a></li>
+    <li><a href="#s7">Confidentiality</a></li>
+    <li><a href="#s8">Warranties and Disclaimer</a></li>
+    <li><a href="#s9">Limitation of Liability</a></li>
+    <li><a href="#s10">Indemnification</a></li>
+    <li><a href="#s11">Termination</a></li>
+    <li><a href="#s12">Miscellaneous</a></li>
+    <li><a href="#sig">Signatures</a></li>
+    <li><a href="#appendix">Appendices — merge fields &amp; per-client values</a></li>
+  </ol>
+</nav>
+
+<!-- ═════════════════════ PREAMBLE ═════════════════════ -->
+
+<p>This Master Services Agreement ("<strong>Agreement</strong>") is entered into on <span class="mf">effective_date</span> between:</p>
+
+<p><span class="mf">titan_legal_name</span> ("<strong>Provider</strong>"), a <span class="mf">titan_entity_type</span> with its principal place of business at <span class="mf">titan_address</span>; and</p>
+
+<p><span class="mf">client_legal_name</span> ("<strong>Client</strong>"), with its principal place of business at <span class="mf">client_address</span>.</p>
+
+<p>Provider and Client are each a "Party" and collectively the "Parties."</p>
+
+<!-- ═════════════════════ §1 ═════════════════════ -->
+
+<h2 id="s1">1. Services</h2>
+
+<p>Provider will furnish software development and technical support services ("<strong>Services</strong>") to Client on an ongoing basis. The general scope is described in the Project Requirements Document ("<strong>PRD</strong>") referenced at <span class="mf">prd_reference</span>, which is incorporated by reference. The PRD may be updated by mutual written agreement.</p>
+
+<p>Services may include, without limitation:</p>
+<ul>
+  <li>Software development and feature implementation</li>
+  <li>Bug fixes and maintenance</li>
+  <li>Technical advisory and consultation</li>
+  <li>Response to Client's support requests within the timeframes set in §4</li>
+</ul>
+
+<!-- ═════════════════════ §2 ═════════════════════ -->
+
+<h2 id="s2">2. Term</h2>
+
+<p>This Agreement is effective on <span class="mf">effective_date</span> and continues on a month-to-month basis (each month a "<strong>Retainer Period</strong>") until terminated under §11. The first Retainer Period begins on <span class="mf">term_start</span>.</p>
+
+<p>Each Retainer Period automatically renews unless either Party gives at least <span class="mf">notice_period_days</span> days' written notice prior to the end of the then-current Retainer Period.</p>
+
+<!-- ═════════════════════ §3 ═════════════════════ -->
+
+<h2 id="s3">3. Fees and Payment</h2>
+
+<h3>3.1 Monthly Retainer</h3>
+<p>Client will pay Provider <strong>$<span class="mf">monthly_retainer_amount</span> USD per month</strong> (the "Monthly Retainer"), payable on the same day of each month as the Effective Date. Payment is made via Stripe automatic billing on the payment method Client maintains on file with Provider.</p>
+
+<h3>3.2 Included Active Hours</h3>
+<p>The Monthly Retainer includes up to <strong><span class="mf">hours_included</span> Active Hours</strong> of Services per Retainer Period.</p>
+<p>"Active Hours" means the time during which Provider's development tools — including AI-assisted development environments — are actively executing work on Client's project, measured by automated logging in Provider's systems. Time spent on idle processes, deployments, queue waits, or asynchronous background tasks that do not require active attention is <strong>not</strong> counted.</p>
+
+<h3>3.3 Carryover of Unused Hours</h3>
+<p>Up to <span class="mf">carryover_percent</span>% of unused Active Hours in a Retainer Period roll over to the next Retainer Period, capped at <span class="mf">carryover_cap_months</span> Retainer Period(s) of carryover. Carried-over hours that exceed the cap expire.</p>
+
+<h3>3.4 Overage Rate</h3>
+<p>Services performed in excess of the included Active Hours (after applying any carryover) are billed at a tiered hourly rate based on the nature of the work:</p>
+
+<table>
+  <thead>
+    <tr><th>Tier</th><th>Rate (USD/hr)</th><th>Examples</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Junior</td><td>$<span class="mf">rate_junior</span></td><td>Routine maintenance, content updates, small bug fixes</td></tr>
+    <tr><td>Standard</td><td>$<span class="mf">rate_standard</span></td><td>Feature development, integration work</td></tr>
+    <tr><td>Senior</td><td>$<span class="mf">rate_senior</span></td><td>Architecture, complex debugging, production incidents</td></tr>
+    <tr><td>Strategic</td><td>$<span class="mf">rate_strategic</span></td><td>System design, planning, migration leadership</td></tr>
+  </tbody>
+</table>
+
+<p>Provider determines the appropriate tier for each unit of overage work and shows the assignment on each invoice. Client may request a written justification for any tier assignment.</p>
+
+<h3>3.5 Overage Approval Threshold</h3>
+<p>Provider will obtain Client's written approval (email is sufficient) before incurring more than <strong>$<span class="mf">overage_approval_threshold</span> USD</strong> of overage charges in a single Retainer Period, except where immediate action is required to address a Critical Issue under §4.1.</p>
+
+<h3>3.6 Out-of-Scope Projects</h3>
+<p>Substantial new features, major redesigns, or work outside ordinary maintenance and iteration ("<strong>Out-of-Scope Projects</strong>") will be quoted separately as fixed-scope engagements with their own statements of work. Out-of-Scope work is not billed against included Active Hours or overage rates.</p>
+
+<h3>3.7 Invoices and Payment Terms</h3>
+<p>Provider will issue an invoice on the first business day of each Retainer Period covering the upcoming Monthly Retainer and the prior period's overage charges (if any). Invoices are due <strong>net 15 days</strong> from issue. Late payments accrue interest at 1.5% per month or the maximum rate permitted by law, whichever is lower.</p>
+
+<h3>3.8 Failed Payments</h3>
+<p>If automatic payment fails, Client has <strong>10 business days</strong> to cure before Provider may suspend Services. Provider will notify Client in writing of any failed payment within two business days of the failure.</p>
+
+<!-- ═════════════════════ §4 ═════════════════════ -->
+
+<h2 id="s4">4. Response Service Levels</h2>
+
+<h3>4.1 Critical Issues</h3>
+<p>A "<strong>Critical Issue</strong>" means a system Client uses in active business operation is down, broken, or producing materially incorrect data. For Critical Issues, Provider will acknowledge the issue within <span class="mf">response_sla_critical</span> and begin substantive work within the same window.</p>
+
+<h3>4.2 Standard Requests</h3>
+<p>For all other Services requests, Provider will acknowledge within <span class="mf">response_sla_standard</span> business days. "Business day" means Monday through Friday, excluding U.S. federal holidays, between 9:00 AM and 6:00 PM Eastern Time.</p>
+
+<h3>4.3 Out-of-Hours Work</h3>
+<p>Work performed outside business hours at Client's request is billed at <strong>1.5×</strong> the applicable tier rate. Provider may decline non-critical out-of-hours requests.</p>
+
+<!-- ═════════════════════ §5 ═════════════════════ -->
+
+<h2 id="s5">5. Client Responsibilities</h2>
+
+<p>Client agrees to:</p>
+<ul>
+  <li>Provide Provider with reasonable access to systems, accounts, repositories, and information necessary to perform Services</li>
+  <li>Respond to Provider's requests for input, feedback, or approvals within <strong>five business days</strong></li>
+  <li>Maintain a valid payment method on file</li>
+  <li>Designate at least one Authorized Representative empowered to approve overage charges, scope changes, and PRD amendments</li>
+</ul>
+
+<p>Provider is not responsible for delays caused by Client's failure to meet these responsibilities and may extend any deadlines accordingly.</p>
+
+<!-- ═════════════════════ §6 ═════════════════════ -->
+
+<h2 id="s6">6. Intellectual Property</h2>
+
+<h3>6.1 Work Product</h3>
+<p>Upon Client's full payment for the Services in which a Work Product was created, Provider assigns to Client all right, title, and interest in custom software, written materials, designs, configurations, and other deliverables developed specifically for Client ("<strong>Work Product</strong>").</p>
+
+<h3>6.2 Pre-existing Materials</h3>
+<p>Provider retains all rights to its pre-existing tools, frameworks, libraries, methodologies, templates, and general know-how used in performing the Services ("<strong>Pre-existing Materials</strong>"). Provider grants Client a perpetual, non-exclusive, worldwide, royalty-free license to use Pre-existing Materials solely as embedded in the Work Product.</p>
+
+<h3>6.3 Third-Party Materials</h3>
+<p>Work Product may incorporate third-party open-source or commercial components. Such components remain governed by their respective licenses; Provider will identify any non-permissive licenses on request.</p>
+
+<h3>6.4 Portfolio Rights</h3>
+<p>Provider may identify Client as a client of Provider and may display a general description of the Work Product in Provider's portfolio and marketing materials, provided no Confidential Information is disclosed.</p>
+
+<!-- ═════════════════════ §7 ═════════════════════ -->
+
+<h2 id="s7">7. Confidentiality</h2>
+
+<p>Each Party may receive information from the other that is marked confidential, or that a reasonable person would understand to be confidential ("<strong>Confidential Information</strong>").</p>
+
+<p>The receiving Party will:</p>
+<ul>
+  <li>use Confidential Information only to perform under this Agreement;</li>
+  <li>protect it with at least the same care it uses for its own confidential information, and in no event less than reasonable care; and</li>
+  <li>not disclose it to any third party without the disclosing Party's prior written consent.</li>
+</ul>
+
+<p>Confidentiality obligations survive termination for <strong>three (3) years</strong>.</p>
+
+<p>Confidential Information does not include information that (a) is or becomes public through no fault of the receiving Party, (b) was lawfully known to the receiving Party prior to disclosure, (c) is rightfully obtained from a third party without a duty of confidentiality, or (d) is independently developed without use of the disclosing Party's Confidential Information.</p>
+
+<!-- ═════════════════════ §8 ═════════════════════ -->
+
+<h2 id="s8">8. Warranties and Disclaimer</h2>
+
+<p>Provider warrants that Services will be performed in a professional and workmanlike manner consistent with industry standards.</p>
+
+<p class="legal-cap">EXCEPT AS EXPRESSLY PROVIDED IN THIS AGREEMENT, SERVICES AND WORK PRODUCT ARE PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. Provider does not warrant that Services or Work Product will be uninterrupted, error-free, or compatible with any specific third-party system unless expressly agreed in writing.</p>
+
+<!-- ═════════════════════ §9 ═════════════════════ -->
+
+<h2 id="s9">9. Limitation of Liability</h2>
+
+<p class="legal-cap">EXCEPT FOR BREACHES OF CONFIDENTIALITY (§7) OR INDEMNIFICATION OBLIGATIONS (§10), NEITHER PARTY WILL BE LIABLE TO THE OTHER FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, OR PUNITIVE DAMAGES, INCLUDING LOST PROFITS OR LOST DATA, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+
+<p class="legal-cap">EACH PARTY'S TOTAL CUMULATIVE LIABILITY UNDER THIS AGREEMENT IS LIMITED TO THE AMOUNTS PAID OR PAYABLE BY CLIENT TO PROVIDER IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE EVENT GIVING RISE TO THE CLAIM.</p>
+
+<!-- ═════════════════════ §10 ═════════════════════ -->
+
+<h2 id="s10">10. Indemnification</h2>
+
+<p>Each Party will defend and indemnify the other Party against third-party claims, damages, and reasonable attorneys' fees arising from the indemnifying Party's:</p>
+<ul>
+  <li>gross negligence or willful misconduct;</li>
+  <li>material breach of this Agreement; or</li>
+  <li>in Provider's case, infringement of a third party's intellectual property rights by Work Product (excluding any infringement attributable to Client's instructions, Client-supplied materials, or modifications made by Client).</li>
+</ul>
+<p>Indemnification is conditioned on prompt written notice and reasonable cooperation by the indemnified Party.</p>
+
+<!-- ═════════════════════ §11 ═════════════════════ -->
+
+<h2 id="s11">11. Termination</h2>
+
+<h3>11.1 Termination for Convenience</h3>
+<p>Either Party may terminate this Agreement at any time with at least <span class="mf">notice_period_days</span> days' written notice. Client remains obligated for the Monthly Retainer through the end of the Retainer Period in which termination becomes effective.</p>
+
+<h3>11.2 Termination for Cause</h3>
+<p>Either Party may terminate this Agreement immediately upon written notice if the other Party materially breaches the Agreement and fails to cure the breach within <span class="mf">cure_period_days</span> days after receipt of written notice describing the breach in reasonable detail.</p>
+
+<h3>11.3 Effect of Termination</h3>
+<p>Upon termination:</p>
+<ul>
+  <li>Provider will deliver to Client all Work Product for which Client has paid in full;</li>
+  <li>Client will pay all outstanding invoices, including pro-rated overage for the final Retainer Period;</li>
+  <li>Each Party will return or destroy the other Party's Confidential Information on request.</li>
+</ul>
+<p>Provisions that by their nature should survive — including §6 (IP), §7 (Confidentiality), §8 (Disclaimer), §9 (Liability), §10 (Indemnification), and §12 (Miscellaneous) — survive termination.</p>
+
+<!-- ═════════════════════ §12 ═════════════════════ -->
+
+<h2 id="s12">12. Miscellaneous</h2>
+
+<h3>12.1 Independent Contractor</h3>
+<p>Provider is an independent contractor. Nothing in this Agreement creates a partnership, joint venture, employer-employee relationship, or agency. Provider is responsible for its own taxes, insurance, and benefits.</p>
+
+<h3>12.2 Assignment</h3>
+<p>Neither Party may assign this Agreement or any rights under it without the other Party's prior written consent, except in connection with a merger, acquisition, or sale of all or substantially all of its assets.</p>
+
+<h3>12.3 Notices</h3>
+<p>Notices under this Agreement must be in writing and delivered by email to the addresses in the signature block. Notices of termination, breach, or indemnification must additionally be sent by certified mail or nationally recognized overnight courier.</p>
+
+<h3>12.4 Governing Law and Venue</h3>
+<p>This Agreement is governed by the laws of the State of <span class="mf">governing_state</span>, without regard to its conflicts of law principles. Disputes arising out of or relating to this Agreement will be brought exclusively in the state or federal courts located in <span class="mf">governing_county</span>, <span class="mf">governing_state</span>, and each Party consents to personal jurisdiction in those courts.</p>
+
+<h3>12.5 Entire Agreement</h3>
+<p>This Agreement, together with any PRD or statements of work expressly incorporated by reference, is the entire agreement between the Parties on its subject matter and supersedes any prior oral or written agreements on that subject matter. Amendments must be in writing and signed by both Parties.</p>
+
+<h3>12.6 Severability and Waiver</h3>
+<p>If any provision of this Agreement is held unenforceable, the remainder of the Agreement remains in full force and effect. No waiver of any provision is effective unless in writing and signed by the waiving Party.</p>
+
+<h3>12.7 Counterparts and Electronic Signatures</h3>
+<p>This Agreement may be signed in counterparts, including by electronic signature or PDF, each of which is deemed an original and which together constitute one instrument.</p>
+
+<h3>12.8 Force Majeure</h3>
+<p>Neither Party is liable for delays or failures in performance caused by events beyond its reasonable control, including natural disasters, war, civil unrest, government actions, internet or cloud-service outages of significant scope, and pandemics. The affected Party must promptly notify the other and resume performance as soon as reasonably practicable.</p>
+
+<!-- ═════════════════════ SIGNATURES ═════════════════════ -->
+
+<h2 id="sig">Signatures</h2>
+
+<p>The Parties have caused this Agreement to be signed by their duly authorized representatives as of the Effective Date.</p>
+
+<div class="sig-block">
+  <h4>Provider — <span class="mf">titan_legal_name</span></h4>
+  <dl>
+    <dt>Signature</dt><dd><span class="sig-line"></span></dd>
+    <dt>Name</dt><dd><span class="mf">titan_signatory_name</span></dd>
+    <dt>Title</dt><dd><span class="mf">titan_signatory_title</span></dd>
+    <dt>Date</dt><dd><span class="sig-line"></span></dd>
+    <dt>Email</dt><dd><span class="mf">titan_signatory_email</span></dd>
+  </dl>
+</div>
+
+<div class="sig-block">
+  <h4>Client — <span class="mf">client_legal_name</span></h4>
+  <dl>
+    <dt>Signature</dt><dd><span class="sig-line"></span></dd>
+    <dt>Name</dt><dd><span class="mf">client_signatory_name</span></dd>
+    <dt>Title</dt><dd><span class="mf">client_signatory_title</span></dd>
+    <dt>Date</dt><dd><span class="sig-line"></span></dd>
+    <dt>Email</dt><dd><span class="mf">client_email</span></dd>
+  </dl>
+</div>
+
+<!-- ═════════════════════ APPENDICES ═════════════════════ -->
+
+<h2 id="appendix">Appendices</h2>
+
+<h3>Appendix A — Merge fields reference</h3>
+<table>
+  <thead>
+    <tr><th>Field</th><th>Description</th><th>Default</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code class="mf">effective_date</code></td><td>Date contract is signed</td><td>(required)</td></tr>
+    <tr><td><code class="mf">term_start</code></td><td>Date first Retainer Period begins</td><td>(required)</td></tr>
+    <tr><td><code class="mf">titan_legal_name</code></td><td>Provider entity name</td><td>Titan Secure Tech LLC</td></tr>
+    <tr><td><code class="mf">titan_entity_type</code></td><td>e.g. limited liability company</td><td>(required)</td></tr>
+    <tr><td><code class="mf">titan_address</code></td><td>Provider principal office address</td><td>(required)</td></tr>
+    <tr><td><code class="mf">titan_signatory_name</code></td><td>Name of person signing for Provider</td><td>(required)</td></tr>
+    <tr><td><code class="mf">titan_signatory_title</code></td><td>Title of Provider signatory</td><td>(required)</td></tr>
+    <tr><td><code class="mf">titan_signatory_email</code></td><td>Email of Provider signatory</td><td>(required)</td></tr>
+    <tr><td><code class="mf">client_legal_name</code></td><td>Client entity name</td><td>(required)</td></tr>
+    <tr><td><code class="mf">client_address</code></td><td>Client principal office address</td><td>(required)</td></tr>
+    <tr><td><code class="mf">client_signatory_name</code></td><td>Name of person signing for Client</td><td>(required)</td></tr>
+    <tr><td><code class="mf">client_signatory_title</code></td><td>Title of Client signatory</td><td>(required)</td></tr>
+    <tr><td><code class="mf">client_email</code></td><td>Email of Client signatory</td><td>(required)</td></tr>
+    <tr><td><code class="mf">prd_reference</code></td><td>URL or identifier for the PRD</td><td>(required)</td></tr>
+    <tr><td><code class="mf">monthly_retainer_amount</code></td><td>Monthly retainer in USD, no currency symbol</td><td>(required)</td></tr>
+    <tr><td><code class="mf">hours_included</code></td><td>Active hours included per Retainer Period</td><td>(required)</td></tr>
+    <tr><td><code class="mf">carryover_percent</code></td><td>Percent of unused hours that roll over</td><td>50</td></tr>
+    <tr><td><code class="mf">carryover_cap_months</code></td><td>Max months of carryover</td><td>1</td></tr>
+    <tr><td><code class="mf">rate_junior</code></td><td>Junior tier hourly rate</td><td>80</td></tr>
+    <tr><td><code class="mf">rate_standard</code></td><td>Standard tier hourly rate</td><td>130</td></tr>
+    <tr><td><code class="mf">rate_senior</code></td><td>Senior tier hourly rate</td><td>180</td></tr>
+    <tr><td><code class="mf">rate_strategic</code></td><td>Strategic tier hourly rate</td><td>250</td></tr>
+    <tr><td><code class="mf">overage_approval_threshold</code></td><td>USD overage that needs written pre-approval</td><td>300</td></tr>
+    <tr><td><code class="mf">response_sla_critical</code></td><td>Critical-issue response window</td><td>24 business hours</td></tr>
+    <tr><td><code class="mf">response_sla_standard</code></td><td>Standard-request response window</td><td>2</td></tr>
+    <tr><td><code class="mf">notice_period_days</code></td><td>Days notice for termination for convenience</td><td>30</td></tr>
+    <tr><td><code class="mf">cure_period_days</code></td><td>Days to cure a material breach</td><td>10</td></tr>
+    <tr><td><code class="mf">governing_state</code></td><td>Governing-law state</td><td>(required)</td></tr>
+    <tr><td><code class="mf">governing_county</code></td><td>Governing-law county</td><td>(required)</td></tr>
+  </tbody>
+</table>
+
+<h3>Appendix B — Per-client default values (current proposal)</h3>
+<table>
+  <thead>
+    <tr><th>Field</th><th>Connective Sports</th><th>Tatlist</th><th>Marian Washington</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>monthly_retainer_amount</td><td>1800</td><td>1200</td><td>650</td></tr>
+    <tr><td>hours_included</td><td>10</td><td>7</td><td>4</td></tr>
+    <tr><td>carryover_percent</td><td>50</td><td>50</td><td>100</td></tr>
+    <tr><td>carryover_cap_months</td><td>1</td><td>1</td><td>2</td></tr>
+    <tr><td>response_sla_critical</td><td>24 business hours</td><td>24 business hours</td><td>n/a (no critical tier)</td></tr>
+    <tr><td>response_sla_standard</td><td>2 business days</td><td>3 business days</td><td>2 business days</td></tr>
+  </tbody>
+</table>
+
+<p style="font-family: var(--sans); color: var(--text-muted); font-size: 0.9rem;">For ad-hoc clients like GapSnow, this template doesn't apply — a separate fixed-scope engagement template is needed.</p>
+
+<footer>
+  Source: <code>contracts/templates/sla-retainer.md</code> in the Titan repo.
+  Related: <a href="titan-sla-retainer-proposal-2026-05-13.html">retainer proposal</a> ·
+  <a href="billing-models-2026-05-13.html">billing models playground</a>.
+</footer>
+
+</body>
+</html>
