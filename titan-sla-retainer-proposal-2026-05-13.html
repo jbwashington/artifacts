@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en"
+      data-artifact-name="Titan SLA Retainer Proposal"
+      data-artifact-grammar="proposal-v1"
+      data-artifact-version="1"
+      data-artifact-created="2026-05-13"
+      data-artifact-author="jbwashington">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Titan SLA Retainer Proposal — for Aisha review</title>
+  <style>
+    :root {
+      --bg: #FAF9F5;
+      --surface: #F0EEE6;
+      --card: #FFFFFF;
+      --text: #141413;
+      --text-muted: #87867F;
+      --border: 1.5px solid #D1CFC5;
+      --border-soft: 1px solid #E3DACC;
+      --accent: #5C7CA3;
+      --olive: #788C5D;
+      --clay: #D97757;
+      --danger: #B04A4A;
+      --oat: #E3DACC;
+      --serif: ui-serif, Georgia, serif;
+      --sans: system-ui, -apple-system, sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(20,20,19,.06);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f0f14; --surface: #1a1a2e; --card: #16213e; --text: #e6e7ec;
+        --text-muted: #8b8fa5; --border: 1.5px solid #2a2a3e; --border-soft: 1px solid #232336;
+        --accent: #7c83ff; --olive: #34d399; --clay: #f59e0b; --danger: #f87171; --oat: #1e2040;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: var(--sans);
+      font-size: 15.5px;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 5rem;
+    }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 600; }
+    h1 { font-size: 1.8rem; margin: 0 0 0.4rem; line-height: 1.2; }
+    h2 { font-size: 1.25rem; margin: 2.25rem 0 0.75rem; }
+    h3 { font-size: 1.05rem; margin: 1rem 0 0.45rem; }
+    p { margin: 0 0 0.65rem; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: var(--oat);
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+    }
+    .label {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--r-lg);
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 1rem;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .card.accent  { border-left: 3px solid var(--accent); }
+    .card.success { border-left: 3px solid var(--olive); }
+    .card.warn    { border-left: 3px solid var(--clay); }
+    .card.danger  { border-left: 3px solid var(--danger); }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 0.18em 0.55em;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      font-family: var(--mono);
+      background: var(--oat);
+      color: var(--text-muted);
+    }
+    .chip.olive { background: color-mix(in srgb, var(--olive) 18%, transparent); color: var(--olive); }
+    .chip.clay  { background: color-mix(in srgb, var(--clay)  18%, transparent); color: var(--clay); }
+    .chip.accent { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); }
+    .chip.danger { background: color-mix(in srgb, var(--danger) 18%, transparent); color: var(--danger); }
+
+    .price {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .price .per { font-size: 0.9rem; color: var(--text-muted); font-family: var(--sans); font-weight: 400; }
+
+    .terms {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 0.5rem 1rem;
+      font-size: 0.92rem;
+      margin: 0.85rem 0 0.5rem;
+    }
+    .terms dt { color: var(--text-muted); font-family: var(--mono); font-size: 0.78rem; padding-top: 0.1rem; }
+    .terms dd { margin: 0; }
+
+    .decision-list label {
+      display: flex;
+      gap: 0.65rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--surface);
+      border-radius: var(--r-sm);
+      margin-bottom: 0.45rem;
+      cursor: pointer;
+      align-items: flex-start;
+      font-size: 0.92rem;
+    }
+    .decision-list input[type="checkbox"] { margin-top: 0.25rem; flex-shrink: 0; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 0.5rem 0 1rem; }
+    th, td { text-align: left; padding: 0.55rem 0.5rem; border-bottom: var(--border); vertical-align: top; }
+    th { font-family: var(--mono); font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    td.amt { font-family: var(--mono); font-weight: 600; text-align: right; }
+
+    .stripe-block {
+      background: var(--surface);
+      border-radius: var(--r-md);
+      padding: 0.85rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      margin: 0.4rem 0 1rem;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1.25rem 0.9rem 3rem; font-size: 15px; }
+      h1 { font-size: 1.45rem; }
+      .terms { grid-template-columns: 1fr; gap: 0.15rem 0; }
+      .terms dt { padding-top: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="label">For Aisha · 2026-05-13 · internal review (not yet client-facing)</p>
+  <h1>Titan SLA Retainer Proposal</h1>
+  <p style="color: var(--text-muted);">
+    Three of four Titan clients should be on SLAs. This is the proposed structure for each — monthly retainer baseline,
+    per-session overages at tiered hourly. Numbers are defaults, intended for you to redline before any of this
+    becomes real in Stripe.
+  </p>
+  <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin:0.6rem 0 0;">
+    <span class="chip accent">3 clients</span>
+    <span class="chip">monthly recurring</span>
+    <span class="chip clay">no Stripe writes until you approve</span>
+  </div>
+</header>
+
+<div class="card accent">
+  <p class="label">Why now</p>
+  <p style="margin-bottom: 0;">
+    Connective Sports and Tatlist are already transitioning to SLAs. Marian Washington's MVP shipped — she
+    <strong>should</strong> be on one and isn't, which is revenue we're leaving on the table.
+    Locking in retainer pricing now also formalizes scope, gives us legitimate response-time guarantees to sell,
+    and stabilizes monthly revenue from the three biggest accounts.
+  </p>
+</div>
+
+<!-- ═════════════════════ CONNECTIVE SPORTS ═════════════════════ -->
+
+<h2>Connective Sports</h2>
+
+<article class="card success">
+  <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+    <div>
+      <p class="label" style="margin-bottom: 0.25rem;">Active product · ongoing dashboard &amp; analytics work</p>
+      <span class="chip olive">most engaged client</span>
+      <span class="chip">7 sessions / ~$139 raw cost in recent window</span>
+    </div>
+    <div class="price">$1,800<span class="per"> / month</span></div>
+  </div>
+
+  <dl class="terms">
+    <dt>Includes</dt>
+    <dd>Up to <strong>10 active-time hours</strong> of work per month across dashboard, data pipeline, and StatSports/Tampa Gold integration. Slack/email support for non-critical questions.</dd>
+
+    <dt>Response SLA</dt>
+    <dd><strong>24 business hours</strong> for critical (prod-down) issues. <strong>2 business days</strong> for feature/bug requests.</dd>
+
+    <dt>Overage</dt>
+    <dd>Anything beyond 10h: per-session billing at tiered hourly ($130–$250/hr based on session tier). Approved in advance over $30 of estimated agent cost.</dd>
+
+    <dt>Carryover</dt>
+    <dd>50% of unused hours roll to next month, capped at one month forward.</dd>
+
+    <dt>Term</dt>
+    <dd>Month-to-month auto-renew, 30-day notice to cancel.</dd>
+  </dl>
+
+  <p class="label" style="margin-top: 0.6rem;">Rationale</p>
+  <p style="font-size: 0.9rem; margin-bottom: 0;">
+    Their actual recent work has been heavy — the MVP review session alone burned $42 in API cost (so ~6h equivalent at the Senior tier).
+    $1,800/mo at 10h is ~$180/hr effective, matching the Senior rate. Strategic work (migrations, architecture) is overage territory and bills above the floor.
+  </p>
+</article>
+
+<!-- ═════════════════════ TATLIST ═════════════════════ -->
+
+<h2>Tatlist</h2>
+
+<article class="card success">
+  <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+    <div>
+      <p class="label" style="margin-bottom: 0.25rem;">Active app development · directory product</p>
+      <span class="chip">transitioning to SLA</span>
+    </div>
+    <div class="price">$1,200<span class="per"> / month</span></div>
+  </div>
+
+  <dl class="terms">
+    <dt>Includes</dt>
+    <dd>Up to <strong>7 active-time hours</strong> of work per month. Auth, schema, filter/search, and listing-flow maintenance. Standard support channels.</dd>
+
+    <dt>Response SLA</dt>
+    <dd><strong>24 business hours</strong> for critical issues. <strong>3 business days</strong> for non-critical.</dd>
+
+    <dt>Overage</dt>
+    <dd>Tiered hourly ($130–$250/hr) for work beyond 7h. Approved in advance over $30 estimated agent cost.</dd>
+
+    <dt>Carryover</dt>
+    <dd>50% rollover, one-month cap (same as Connective).</dd>
+
+    <dt>Term</dt>
+    <dd>Month-to-month auto-renew, 30-day notice.</dd>
+  </dl>
+
+  <p class="label" style="margin-top: 0.6rem;">Rationale</p>
+  <p style="font-size: 0.9rem; margin-bottom: 0;">
+    Lighter ongoing surface than Connective (single product, no third-party integration churn).
+    7h floor at $1,200 is ~$171/hr effective — slightly under Connective's effective rate, which feels right for a less complex stack.
+  </p>
+</article>
+
+<!-- ═════════════════════ MARIAN WASHINGTON ═════════════════════ -->
+
+<h2>Marian Washington</h2>
+
+<article class="card warn">
+  <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+    <div>
+      <p class="label" style="margin-bottom: 0.25rem;">Post-MVP · maintenance &amp; iteration</p>
+      <span class="chip clay">SLA overdue · catch-up conversation needed</span>
+    </div>
+    <div class="price">$650<span class="per"> / month</span></div>
+  </div>
+
+  <dl class="terms">
+    <dt>Includes</dt>
+    <dd>Up to <strong>4 active-time hours</strong> per month. Bug fixes, content updates, small features. Email support.</dd>
+
+    <dt>Response SLA</dt>
+    <dd><strong>2 business days</strong> for all requests. No prod-critical tier (her site doesn't have a 24/7 use case).</dd>
+
+    <dt>Overage</dt>
+    <dd>Tiered hourly for work beyond 4h. Larger feature builds quoted separately as fixed-scope projects rather than as overages.</dd>
+
+    <dt>Carryover</dt>
+    <dd>100% rollover for up to two months (gives her a slow-month cushion, more important for a smaller client).</dd>
+
+    <dt>Term</dt>
+    <dd>Month-to-month auto-renew, 30-day notice.</dd>
+  </dl>
+
+  <p class="label" style="margin-top: 0.6rem;">Rationale</p>
+  <p style="font-size: 0.9rem; margin-bottom: 0;">
+    Smaller surface (single static-ish site), less monthly variability expected. $650 / 4h = ~$163/hr effective.
+    The lower floor accepts that she's a lighter client; the generous carryover protects her from feeling like she's overpaying on quiet months.
+  </p>
+
+  <div class="card danger" style="margin: 0.75rem 0 0; padding: 0.75rem 0.9rem;">
+    <p class="label" style="margin-bottom: 0.3rem;">Special handling — Marian's onboarding</p>
+    <p style="font-size: 0.88rem; margin-bottom: 0;">
+      She didn't sign up for a retainer; we never sold her one. <strong>This isn't an invoice-and-hope move</strong> — it's a conversation:
+      "Your MVP is live, here's the support structure we're putting in place for post-launch clients, here's what's covered." If she says no, we lose
+      the recurring revenue but keep her as ad-hoc — not the worst case. The conversation needs to happen before the first invoice ships.
+    </p>
+  </div>
+</article>
+
+<!-- ═════════════════════ GAPSNOW (CONTEXT) ═════════════════════ -->
+
+<h2>GapSnow — no retainer (for the record)</h2>
+
+<article class="card">
+  <p style="font-size: 0.92rem; margin-bottom: 0;">
+    Nonprofit doing small, simple changes. Stays on the existing <strong>0.65× modifier</strong> per-session
+    tiered hourly billing. No retainer overhead, no SLA. Listed here so the four-client picture is complete, not because anything changes.
+  </p>
+</article>
+
+<!-- ═════════════════════ SUMMARY ═════════════════════ -->
+
+<h2>The numbers if all three sign</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Retainer</th>
+      <th>Hours included</th>
+      <th class="amt">MRR contribution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Connective Sports</td>
+      <td>$1,800/mo</td>
+      <td>10h active</td>
+      <td class="amt">$1,800</td>
+    </tr>
+    <tr>
+      <td>Tatlist</td>
+      <td>$1,200/mo</td>
+      <td>7h active</td>
+      <td class="amt">$1,200</td>
+    </tr>
+    <tr>
+      <td>Marian Washington</td>
+      <td>$650/mo</td>
+      <td>4h active</td>
+      <td class="amt">$650</td>
+    </tr>
+    <tr style="background: color-mix(in srgb, var(--olive) 8%, transparent);">
+      <td colspan="3"><strong>Baseline MRR (before overages)</strong></td>
+      <td class="amt"><strong>$3,650 / month</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="font-size: 0.9rem; color: var(--text-muted);">
+  Plus overages billed per session (drag-tier-assigned). Recent Connective alone has generated $30–$60 in overage-territory work in some months — assume ~$1,000–$2,000/mo aggregate overage across the three accounts in active build phases, settling down once SLAs are stable.
+</p>
+
+<!-- ═════════════════════ STRIPE SETUP ═════════════════════ -->
+
+<h2>Stripe setup spec</h2>
+
+<p>Three products, three recurring prices. No customers re-keyed — these attach to the existing Stripe customer IDs already in the Titan portal.</p>
+
+<div class="stripe-block">
+Product: "Titan SLA — Connective Sports"<br>
+  Price: $1,800 USD / month, recurring<br>
+  Metadata: { client_id: connective-sports, tier: pro, hours_included: 10 }<br>
+<br>
+Product: "Titan SLA — Tatlist"<br>
+  Price: $1,200 USD / month, recurring<br>
+  Metadata: { client_id: tatlist, tier: standard, hours_included: 7 }<br>
+<br>
+Product: "Titan SLA — Marian Washington"<br>
+  Price: $650 USD / month, recurring<br>
+  Metadata: { client_id: marian-washington, tier: light, hours_included: 4 }
+</div>
+
+<p style="font-size: 0.9rem;">
+  Implementation in <code>apps/web/lib/stripe.ts</code> — add a helper <code>createSlaSubscription(clientId)</code>
+  that pulls the right price ID by client and attaches it to the existing customer. Overages stay on the
+  existing one-off invoice path (driven by the upcoming <code>/bill</code> command).
+</p>
+
+<!-- ═════════════════════ DECISIONS ═════════════════════ -->
+
+<h2>Decisions needed before this goes live</h2>
+
+<div class="card warn decision-list">
+  <label><input type="checkbox"> Approve <strong>Connective Sports retainer at $1,800/mo</strong> (or set new number)</label>
+  <label><input type="checkbox"> Approve <strong>Tatlist retainer at $1,200/mo</strong> (or set new number)</label>
+  <label><input type="checkbox"> Approve <strong>Marian Washington retainer at $650/mo</strong> (or set new number)</label>
+  <label><input type="checkbox"> Approve <strong>hours-included</strong> for each (10 / 7 / 4)</label>
+  <label><input type="checkbox"> Approve <strong>response-SLA tiers</strong> (24h critical / 2–3 business day non-critical)</label>
+  <label><input type="checkbox"> Approve <strong>carryover policy</strong> (50% one-month for CS &amp; Tatlist, 100% two-month for Marian)</label>
+  <label><input type="checkbox"> Approve <strong>auto-renew + 30-day cancellation</strong> as default terms</label>
+  <label><input type="checkbox"> Confirm I should draft the <strong>Marian catch-up email</strong> for you to review before sending</label>
+  <label><input type="checkbox"> Confirm Aisha (or you) handles the <strong>Connective &amp; Tatlist SLA conversations</strong></label>
+  <label><input type="checkbox"> Approve creating the three <strong>Stripe products + prices</strong> after the above are settled</label>
+</div>
+
+<!-- ═════════════════════ OPEN QUESTIONS ═════════════════════ -->
+
+<h2>Open questions</h2>
+
+<div class="card">
+  <ol style="margin: 0 0 0 1.1rem; padding: 0; font-size: 0.93rem;">
+    <li style="margin-bottom: 0.5rem;"><strong>"Hours" definition.</strong> I'm proposing <em>active API time</em> (the duration the model is actually working) as the meter, because that's what the billing snapshot captures honestly. But clients may push for "wall-clock hours" or "session count." If we go with active time we need a clear explanation of what counts — happy to draft.</li>
+    <li style="margin-bottom: 0.5rem;"><strong>Overage approval threshold.</strong> I picked "$30 estimated agent cost" as the line where overage work needs pre-approval (≈ $300 client-facing). Too low (friction), too high (surprise bills), about right?</li>
+    <li style="margin-bottom: 0.5rem;"><strong>Quarterly review cadence.</strong> Should we build in a "review &amp; reset" every quarter where retainer levels can flex based on actual usage trends? Or annual?</li>
+    <li style="margin-bottom: 0.5rem;"><strong>What about future clients?</strong> Should these three retainers be one-offs, or do we standardize as named tiers (e.g., "Titan SLA — Pro / Standard / Light") that future clients pick from? Standardization is cleaner long-term but harder to fit existing client needs into.</li>
+    <li><strong>Annual prepay discount.</strong> Worth offering? E.g., 10% off if they prepay 12 months. Improves cashflow, locks them in. Or do we stay month-to-month for now?</li>
+  </ol>
+</div>
+
+<aside class="card accent">
+  <p class="label">Suggested sequence</p>
+  <ol style="margin: 0 0 0 1.1rem; padding: 0; font-size: 0.93rem;">
+    <li>You redline this proposal — adjust numbers, push back on terms, answer open questions.</li>
+    <li>I draft the Marian catch-up email + the Connective/Tatlist "we're formalizing your SLA" notes for you to review.</li>
+    <li>Once Aisha signs off, I create the three Stripe products + prices (no customer charges yet — products exist, subscriptions get attached when each client agrees).</li>
+    <li>I wire <code>createSlaSubscription(clientId)</code> in <code>apps/web/lib/stripe.ts</code> so the portal can attach the subscription per client.</li>
+    <li>Build the <code>/bill</code> command for overages (the existing playground UI becomes the monthly reconciliation tool).</li>
+  </ol>
+</aside>
+
+<footer style="margin-top: 3rem; padding-top: 1.25rem; border-top: var(--border); color: var(--text-muted); font-size: 0.82rem;">
+  Companion to the <a href="billing-models-2026-05-13.html" style="color: var(--accent);">billing models playground</a>.
+  Once approved, retainer line items appear there as the "SLA baseline" alongside per-session overage math.
+</footer>
+
+</body>
+</html>
